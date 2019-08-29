@@ -41,7 +41,7 @@ Code snipplet for private api
     key = 'Enter your api key'
     secret = 'Enter your secret for api key' 
     
-    private_api = nicehash.private_api(host, organisation_id, key, secret, True)
+    private_api = nicehash.private_api(host, organisation_id, key, secret)
     
     my_accounts = private_api.get_accounts()
     print(my_accounts)

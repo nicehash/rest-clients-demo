@@ -1,4 +1,4 @@
-#Nicehash python library and command line rest api
+# Nicehash python library and command line rest api
 
 Dependacy
 * requests

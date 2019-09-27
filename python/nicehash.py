@@ -167,6 +167,23 @@ class private_api:
     def get_accounts_for_currency(self, currency):
         return self.request('GET', '/main/api/v2/accounting/account/' + currency, '', None)
 
+    def get_withdrawal_addresses(self, currency, size, page):
+
+        params = "currency={}&size={}&page={}".format(currency, size, page)
+
+        return self.request('GET', '/main/api/v2/accounting/withdrawalAddresses/', params, None)
+
+    def get_withdrawal_types(self):
+        return self.request('GET', '/main/api/v2/accounting/withdrawalAddresses/types/', '', None)
+
+    def withdraw_request(self, address_id, amount, currency):
+        withdraw_data = {
+            "withdrawalAddressId": address_id,
+            "amount": amount,
+            "currency": currency
+        }
+        return self.request('POST', '/main/api/v2/accounting/withdrawal/', '', withdraw_data)
+
     def get_my_active_orders(self, algorithm, market, limit):
 
         ts = self.get_epoch_ms_from_now()

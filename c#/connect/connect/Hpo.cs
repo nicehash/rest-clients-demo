@@ -51,7 +51,7 @@ namespace connect
             Logger.Info("algo settings: {}", mySettings["algorithm"]);
 
             //get balance
-            string accountsResponse = api.get("/main/api/v2/accounting/accounts", true, time);
+            string accountsResponse = api.get("/main/api/v2/accounting/accounts2", true, time);
             DataTable accountsArray = Newtonsoft.Json.JsonConvert.DeserializeObject<DataTable>(accountsResponse);
 
             DataRow myBalace = null;

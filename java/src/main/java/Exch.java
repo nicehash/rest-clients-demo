@@ -52,7 +52,7 @@ public class Exch
 		log.info("exchange settings: " + mySettings);
 
 		//get balance
-		String activityResponse = api.get("main/api/v2/accounting/accounts", true, time);
+		String activityResponse = api.get("main/api/v2/accounting/accounts2", true, time);
 		JsonArray accountsArray = new Gson().fromJson(activityResponse, JsonArray.class);
 		log.info("accounts: " + accountsArray.toString());
 

@@ -73,7 +73,7 @@ my_accounts = private_api.get_accounts()
 print(my_accounts)
 
 # Get balance for BTC address
-my_btc_account = private_api.get_accounts_for_currency(currencies['currencies'][0]['currency'])
+my_btc_account = private_api.get_accounts_for_currency(currencies['currencies'][0]['symbol'])
 print(my_btc_account)
 
 # Get my active hashpower orders

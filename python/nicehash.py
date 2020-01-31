@@ -58,8 +58,8 @@ class public_api:
     def get_markets(self):
         return self.request('GET', '/main/api/v2/mining/markets/', '', None)
 
-    def get_curencies(self):
-        return self.request('GET', '/api/v2/enum/currencies/', '', None)
+    def get_currencies(self):
+        return self.request('GET', '/main/api/v2/public/currencies/', '', None)
 
     def get_multialgo_info(self):
         return self.request('GET', '/main/api/v2/public/simplemultialgo/info/', '', None)

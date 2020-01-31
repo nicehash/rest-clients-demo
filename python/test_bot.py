@@ -38,7 +38,7 @@ markets = public_api.get_markets()
 print(markets)
 
 # Get all curencies
-currencies = public_api.get_curencies()
+currencies = public_api.get_currencies()
 print(currencies)
 
 # Get current global stats

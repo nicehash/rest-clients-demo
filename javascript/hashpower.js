@@ -25,7 +25,7 @@ api.getTime()
 	})
 
 	// get balance
-	// .then(() => api.get('/main/api/v2/accounting/accounts'))
+	// .then(() => api.get('/main/api/v2/accounting/accounts2'))
 	// .then(res => {
 	// 	log('accounts', res);
 	// })

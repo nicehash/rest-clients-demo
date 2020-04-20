@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace connect
 {
@@ -21,6 +18,23 @@ namespace connect
     public class ServerTime
     {
         public string serverTime { get; set; }
+    }
+    public class Currencies
+    {
+        public List<Currency> currencies { get; set; }
+    }
+    public class Currency
+    {
+        public String currency { get; set; }
+        public double available { get; set; }
+    }
+    public class Symbols
+    {
+        public List<Symbol> symbols { get; set; }
+    }
+    public class Symbol 
+    { 
+        public String baseAsset { get; set; }
     }
     public class Pool
     {

@@ -37,32 +37,30 @@ namespace connect
 
             //get algo settings
             string exchResponse = api.get("/exchange/api/v2/info/status");
-            Console.WriteLine("[[["+exchResponse+"]]]");
-            DataTable exchArray = Newtonsoft.Json.JsonConvert.DeserializeObject<DataTable>(exchResponse);
+            Symbols symbolsObj = Newtonsoft.Json.JsonConvert.DeserializeObject<Symbols>(exchResponse);
 
-            DataRow mySettings = null;
-            foreach (DataRow symbol in exchArray.Rows)
+            String mySettings = null;
+            foreach (Symbol s in symbolsObj.symbols)
             {
-                if (symbol["baseAsset"].Equals(CURRENCY_BUY))
+                if (s.baseAsset.Equals(CURRENCY_BUY))
                 {
-                    mySettings = symbol;
+                    mySettings = s.baseAsset;
                 }
             }
-            Logger.Info("exchange settings: {}", mySettings["currency"]);
+            Logger.Info("exchange settings: {}", mySettings);
 
             //get balance
             string accountsResponse = api.get("/main/api/v2/accounting/accounts2", true, time);
-            DataTable accountsArray = Newtonsoft.Json.JsonConvert.DeserializeObject<DataTable>(accountsResponse);
-
-            DataRow myBalace = null;
-            foreach (DataRow account in accountsArray.Rows)
+            Currencies currenciesObj = Newtonsoft.Json.JsonConvert.DeserializeObject<Currencies>(accountsResponse);
+            double myBalace = 0;
+            foreach (Currency c in currenciesObj.currencies)
             {
-                if (account["currency"].Equals(CURRENCY_SELL))
+                if (c.currency.Equals(CURRENCY_SELL))
                 {
-                    myBalace = account;
+                    myBalace = c.available;
                 }
             }
-            Logger.Info("balance: {} {}", myBalace["balance"], CURRENCY_SELL);
+            Logger.Info("balance: {} {}", myBalace, CURRENCY_SELL);
 
             //get order book
             string orderBookResponse = api.get("/exchange/api/v2/orderbook?market=" + CURRENCY_BUY + CURRENCY_SELL + "&limit=100", true, time);

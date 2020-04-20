@@ -52,17 +52,16 @@ namespace connect
 
             //get balance
             string accountsResponse = api.get("/main/api/v2/accounting/accounts2", true, time);
-            DataTable accountsArray = Newtonsoft.Json.JsonConvert.DeserializeObject<DataTable>(accountsResponse);
-
-            DataRow myBalace = null;
-            foreach (DataRow account in accountsArray.Rows)
+            Currencies currenciesObj = Newtonsoft.Json.JsonConvert.DeserializeObject<Currencies>(accountsResponse);
+            double myBalace = 0;
+            foreach (Currency c in currenciesObj.currencies)
             {
-                if (account["currency"].Equals(CURRENCY))
+                if (c.currency.Equals(CURRENCY))
                 {
-                    myBalace = account;
+                    myBalace = c.available;
                 }
             }
-            Logger.Info("balance: {} {}", myBalace["balance"], CURRENCY);
+            Logger.Info("balance: {} {}", myBalace, CURRENCY);
 
             //create pool
             Dictionary<string, string> pool = new Dictionary<string, string>

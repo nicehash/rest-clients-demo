@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace connect
 {
@@ -13,26 +12,28 @@ namespace connect
         private string apiKey;
         private string apiSecret;
 
-        public Api(string urlRoot, string orgId, string apiKey, string apiSecret)
+        public Api()
         {
-            this.urlRoot = urlRoot;
-            this.orgId = orgId;
-            this.apiKey = apiKey;
-            this.apiSecret = apiSecret;
+            this.urlRoot = System.Configuration.ConfigurationManager.AppSettings["URL_ROOT"];
+            this.orgId = System.Configuration.ConfigurationManager.AppSettings["ORG_ID"];
+            this.apiKey = System.Configuration.ConfigurationManager.AppSettings["API_KEY"];
+            this.apiSecret = System.Configuration.ConfigurationManager.AppSettings["API_SECRET"];
         }
 
         private static string HashBySegments(string key, string apiKey, string time, string nonce, string orgId, string method, string encodedPath, string query, string bodyStr)
         {
-            List<string> segments = new List<string>();
-            segments.Add(apiKey);
-            segments.Add(time);
-            segments.Add(nonce);
-            segments.Add(null);
-            segments.Add(orgId);
-            segments.Add(null);
-            segments.Add(method);
-            segments.Add(encodedPath == null ? null : encodedPath);
-            segments.Add(query == null ? null : query);
+            List<string> segments = new List<string>
+            {
+                apiKey,
+                time,
+                nonce,
+                null,
+                orgId,
+                null,
+                method,
+                encodedPath ?? null,
+                query ?? null
+            };
 
             if (bodyStr != null && bodyStr.Length > 0) {
                 segments.Add(bodyStr);

@@ -12,11 +12,6 @@ namespace connect
     {
         private static NLog.Logger Logger = NLog.LogManager.GetCurrentClassLogger();
 
-        private static string URL_ROOT   = "https://api-test.nicehash.com"; //use https://api2.nicehash.com for production
-        private static string ORG_ID     = "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee";
-        private static string API_KEY    = "ffffffff-gggg-hhhh-iiii-jjjjjjjjjjjj";
-        private static string API_SECRET = "kkkkkkkk-llll-mmmm-nnnn-oooooooooooooooooooo-pppp-qqqq-rrrr-ssssssssssss";
-
         private static string CURRENCY_SELL = "TBTC"; //user BTC for production
         private static string CURRENCY_BUY  = "TLTC"; //use LTC for production
 
@@ -27,7 +22,7 @@ namespace connect
             config.AddRule(LogLevel.Info, LogLevel.Fatal, logconsole);
             NLog.LogManager.Configuration = config;
 
-            Api api = new Api(URL_ROOT, ORG_ID, API_KEY, API_SECRET);
+            Api api = new Api();
 
             //get server time
             string timeResponse = api.get("/api/v2/time");

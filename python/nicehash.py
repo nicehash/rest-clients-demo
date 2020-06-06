@@ -208,6 +208,9 @@ class private_api:
     def get_my_pools(self, page, size):
         return self.request('GET', '/main/api/v2/pools/', '', None)
 
+    def get_hashpower_orderbook(self, algorithm):
+        return self.request('GET', '/main/api/v2/hashpower/orderBook/', 'algorithm=' + algorithm, None )
+    
     def create_hashpower_order(self, market, type, algorithm, price, limit, amount, pool_id, algo_response):
 
         algo_setting = self.algo_settings_from_response(algorithm, algo_response)

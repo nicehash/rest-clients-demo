@@ -10,4 +10,4 @@ API="https://api-test.nicehash.com" # test env
 NHCLIENT="python nicehash.py -b $API -o $ORG -k $KEY -s $SEC"
 
 # Run method
-eval "$NHCLIENT -m GET -p '/main/api/v2/accounting/accounts'"; # -b '{json}'
+eval "$NHCLIENT -m GET -p '/main/api/v2/accounting/accounts2'"; # -b '{json}'

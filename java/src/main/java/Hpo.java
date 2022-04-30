@@ -49,20 +49,12 @@ public class Hpo
 		JsonObject mySettings = settings[0];
 		log.info("algo settings: " + mySettings);
 
-	    //get balance
+		//get balance
 		String activityResponse = api.get("main/api/v2/accounting/accounts2", true, time);
-		JsonArray accountsArray = new Gson().fromJson(activityResponse, JsonArray.class);
-		log.info("accounts: " + accountsArray.toString());
+		JsonObject accountsObject = new Gson().fromJson(activityResponse, JsonObject.class);
+		//log.info("accounts: " + accountsObject.toString());
 
-		final double[] balance = new double[1];
-		accountsArray.forEach(acc-> {
-			JsonObject a = acc.getAsJsonObject();
-			if (a.get("currency").getAsString().equals(CURRENCY)) {
-				balance[0] = a.get("balance").getAsDouble();
-			}
-		});
-
-		double avaliableBalance = balance[0];
+		BigDecimal avaliableBalance = accountsObject.getAsJsonObject("total").getAsJsonPrimitive("available").getAsBigDecimal();
 		log.info("balance: " + avaliableBalance + CURRENCY);
 
 		//create new pool

@@ -53,16 +53,11 @@ public class Exch
 
 		//get balance
 		String activityResponse = api.get("main/api/v2/accounting/accounts2", true, time);
-		JsonArray accountsArray = new Gson().fromJson(activityResponse, JsonArray.class);
-		log.info("accounts: " + accountsArray.toString());
+		JsonObject accountsObject = new Gson().fromJson(activityResponse, JsonObject.class);
+		//log.info("accounts: " + accountsObject.toString());
 
-		final double[] balance = new double[1];
-		accountsArray.forEach(acc-> {
-			JsonObject a = acc.getAsJsonObject();
-			if (a.get("currency").getAsString().equals(CURRENCY_SELL)) {
-				balance[0] = a.get("balance").getAsDouble();
-			}
-		});
+		BigDecimal avaliableBalance = accountsObject.getAsJsonObject("total").getAsJsonPrimitive("available").getAsBigDecimal();
+		log.info("balance: " + avaliableBalance + CURRENCY);
 
 		//get order book
 		String orderBookResponse = api.get("exchange/api/v2/orderbook?market="+CURRENCY_BUY+CURRENCY_SELL+"&limit=100", true, time);

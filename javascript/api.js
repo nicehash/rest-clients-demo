@@ -1,15 +1,7 @@
 import CryptoJS from "crypto-js";
 import request from "request-promise-native"
 import qs from 'qs'
-
-function createNonce() {
-	var s = '', length = 32;
-	do {
-		s += Math.random().toString(36).substr(2);
-	} while (s.length < length);
-	s = s.substr(0, length);
-	return s;
-}
+import uuid from 'uuid'
 
 const getAuthHeader = (apiKey, apiSecret, time, nonce, organizationId = '', request = {}) => {
 	const hmac = CryptoJS.algo.HMAC.create(CryptoJS.algo.SHA256, apiSecret);
@@ -40,7 +32,7 @@ const getAuthHeader = (apiKey, apiSecret, time, nonce, organizationId = '', requ
 
 class Api {
 
-	constructor({locale, apiHost, apiKey, apiSecret, orgId}) {
+	constructor({ locale, apiHost, apiKey, apiSecret, orgId }) {
 		this.locale = locale || 'en';
 		this.host = apiHost;
 		this.key = apiKey;
@@ -61,16 +53,16 @@ class Api {
 			});
 	}
 
-	apiCall(method, path, {query, body, time} = {}) {
-		if(this.localTimeDiff === null) {
+	apiCall(method, path, { query, body, time } = {}) {
+		if (this.localTimeDiff === null) {
 			return Promise.reject(new Error('Get server time first .getTime()'));
 		}
 
 		// query in path
-		var [pathOnly,pathQuery] = path.split('?');
-		if(pathQuery) query = {...qs.parse(pathQuery), ...query};
+		var [pathOnly, pathQuery] = path.split('?');
+		if (pathQuery) query = { ...qs.parse(pathQuery), ...query };
 
-		const nonce = createNonce();
+		const nonce = uuid.v4();
 		const timestamp = (time || (+new Date() + this.localTimeDiff)).toString();
 		const options = {
 			uri: this.host + pathOnly,

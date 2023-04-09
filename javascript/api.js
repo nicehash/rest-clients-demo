@@ -1,5 +1,4 @@
 import CryptoJS from "crypto-js";
-import request from "request-promise-native"
 import qs from 'qs'
 
 function createNonce() {
@@ -50,10 +49,8 @@ class Api {
 	}
 
 	getTime() {
-		return request({
-			uri: this.host + '/api/v2/time',
-			json: true
-		})
+		return fetch(this.host + '/api/v2/time',{})
+			.then(res => res.json())
 			.then(res => {
 				this.localTimeDiff = res.serverTime - (+new Date());
 				this.time = res.serverTime;
@@ -72,29 +69,32 @@ class Api {
 
 		const nonce = createNonce();
 		const timestamp = (time || (+new Date() + this.localTimeDiff)).toString();
-		const options = {
-			uri: this.host + pathOnly,
-			method: method,
-			headers: {
-				'X-Request-Id': nonce,
-				'X-User-Agent': 'NHNodeClient',
-				'X-Time': timestamp,
-				'X-Nonce': nonce,
-				'X-User-Lang': this.locale,
-				'X-Organization-Id': this.org,
-				'X-Auth': getAuthHeader(this.key, this.secret, timestamp, nonce, this.org, {
-					method,
-					path: pathOnly,
-					query,
-					body,
-				})
-			},
-			qs: query,
-			body,
-			json: true
-		}
-
-		return request(options);
+		return fetch(`${this.host}${pathOnly}?${qs.stringify(query)}`, {
+				method: method,
+				headers: {
+					"X-Request-Id": nonce,
+					"X-User-Agent": "NHNodeClient",
+					"X-Time": timestamp,
+					"X-Nonce": nonce,
+					"X-User-Lang": this.locale,
+					"X-Organization-Id": this.org,
+					"X-Auth": getAuthHeader(
+						this.key,
+						this.secret,
+						timestamp,
+						nonce,
+						this.org,
+						{
+							method,
+							path: pathOnly,
+							query,
+							body,
+						},
+					),
+				},
+				body,
+			})
+			.then(res => res.json())
 	}
 
 	get(path, options) {

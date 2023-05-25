@@ -127,6 +127,7 @@ export default class Api {
 			await fetch(`${this.host}${pathOnly}?${stringify(query)}`, {
 				method: method,
 				headers: {
+					"Content-type": "application/json",
 					"X-Request-Id": nonce,
 					"X-User-Agent": "NHNodeClient",
 					"X-Time": timestamp,

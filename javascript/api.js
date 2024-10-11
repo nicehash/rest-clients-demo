@@ -69,30 +69,34 @@ class Api {
 
 		const nonce = createNonce();
 		const timestamp = (time || (+new Date() + this.localTimeDiff)).toString();
-		return fetch(`${this.host}${pathOnly}?${qs.stringify(query)}`, {
-				method: method,
-				headers: {
-					"X-Request-Id": nonce,
-					"X-User-Agent": "NHNodeClient",
-					"X-Time": timestamp,
-					"X-Nonce": nonce,
-					"X-User-Lang": this.locale,
-					"X-Organization-Id": this.org,
-					"X-Auth": getAuthHeader(
-						this.key,
-						this.secret,
-						timestamp,
-						nonce,
-						this.org,
-						{
-							method,
-							path: pathOnly,
-							query,
-							body,
-						},
-					),
+		var headers = {
+			"X-Request-Id": nonce,
+			"X-User-Agent": "NHNodeClient",
+			"X-Time": timestamp,
+			"X-Nonce": nonce,
+			"X-User-Lang": this.locale,
+			"X-Organization-Id": this.org,
+			"X-Auth": getAuthHeader(
+				this.key,
+				this.secret,
+				timestamp,
+				nonce,
+				this.org,
+				{
+					method,
+					path: pathOnly,
+					query,
+					body,
 				},
-				body,
+			),
+		}
+
+		if(body && typeof body == 'object') headers['Content-Type'] = "application/json";
+
+		return fetch(`${this.host}${pathOnly}?${qs.stringify(query)}`, {
+				method,
+				headers,
+				body: body ? JSON.stringify(body) : undefined
 			})
 			.then(res => res.json())
 	}

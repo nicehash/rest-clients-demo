@@ -122,33 +122,36 @@ export default class Api {
 
 		const nonce = createNonce();
 		const timestamp = (time || Date.now() + this.localTimeDiff).toString();
+		var headers ={
+			"Content-type": "application/json",
+			"X-Request-Id": nonce,
+			"X-User-Agent": "NHNodeClient",
+			"X-Time": timestamp,
+			"X-Nonce": nonce,
+			"X-User-Lang": this.locale,
+			"X-Organization-Id": this.org,
+			"X-Auth": getAuthHeader(
+				this.key,
+				this.secret,
+				timestamp,
+				nonce,
+				this.org,
+				{
+					method,
+					path: pathOnly,
+					query,
+					body,
+				},
+			),
+		}
+
+		if(body && typeof body == 'object') headers['Content-Type'] = "application/json";
 
 		return (
 			await fetch(`${this.host}${pathOnly}?${stringify(query)}`, {
-				method: method,
-				headers: {
-					"Content-type": "application/json",
-					"X-Request-Id": nonce,
-					"X-User-Agent": "NHNodeClient",
-					"X-Time": timestamp,
-					"X-Nonce": nonce,
-					"X-User-Lang": this.locale,
-					"X-Organization-Id": this.org,
-					"X-Auth": getAuthHeader(
-						this.key,
-						this.secret,
-						timestamp,
-						nonce,
-						this.org,
-						{
-							method,
-							path: pathOnly,
-							query,
-							body,
-						},
-					),
-				},
-				body,
+				method,
+				headers,
+				body: body ? JSON.stringify(body) : undefined
 			})
 		).json();
 	}

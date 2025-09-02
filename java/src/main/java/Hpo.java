@@ -3,6 +3,7 @@ import com.nicehash.connect.Api;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 /**

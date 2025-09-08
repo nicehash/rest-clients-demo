@@ -292,6 +292,24 @@ class private_api:
     def cancel_exchange_order(self, market, order_id):
         query = "market={}&orderId={}".format(market, order_id)
         return self.request('DELETE', '/exchange/api/v2/order', query, None)
+    
+    def start_rig(self, rig_id):
+        
+        rig_data = {
+            "rigId": rig_id,
+            "action": "START"
+            }
+        return self.request('POST', '/main/api/v2/mining/rigs/status2', '',
+                            rig_data)
+    
+    def stop_rig(self, rig_id):
+        
+        rig_data = {
+            "rigId": rig_id,
+            "action": "STOP"
+            }
+        return self.request('POST', '/main/api/v2/mining/rigs/status2', '',
+                            rig_data)
 
 
 if __name__ == "__main__":
